@@ -1,8 +1,12 @@
 import { Link } from 'react-router'
+import { getCategories } from '../api/categories.js'
+import { getProducts } from '../api/products.js'
+import ApiState from '../components/ApiState.jsx'
 import FlowerArt from '../components/FlowerArt.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
-import { categories, products, shop } from '../data/shop.js'
+import { shop } from '../data/shop.js'
+import useApi from '../hooks/useApi.js'
 import usePageTitle from '../hooks/usePageTitle.js'
 import './Home.css'
 
@@ -22,7 +26,10 @@ const STEPS = [
 
 export default function Home() {
   usePageTitle('')
-  const featured = products.filter((p) => p.featured)
+  const productsApi = useApi(() => getProducts(), [])
+  const categoriesApi = useApi(() => getCategories(), [])
+  const products = productsApi.data
+  const featured = (products ?? []).filter((product) => product.featured)
 
   return (
     <>
@@ -37,7 +44,7 @@ export default function Home() {
               <Link to="/order" className="btn btn--outline">Đặt hoa ngay</Link>
             </div>
             <ul className="hero__stats">
-              <li><strong>{products.length}</strong> mẫu hoa theo dịp</li>
+              <li><strong>{products ? products.length : '—'}</strong> mẫu hoa theo dịp</li>
               <li><strong>2 giờ</strong> giao nội thành</li>
               <li><strong>48 giờ</strong> bảo hành độ tươi</li>
             </ul>
@@ -55,10 +62,11 @@ export default function Home() {
           <SectionHeading eyebrow="Danh mục" title="Hoa cho mọi dịp">
             Từ bó hoa nhỏ tặng người thương đến kệ hoa khai trương.
           </SectionHeading>
+          <ApiState loading={categoriesApi.loading} error={categoriesApi.error} onRetry={categoriesApi.reload} />
           <div className="grid grid--4">
-            {categories.map((category) => (
-              <Link key={category.id} to={`/products?category=${category.id}`} className="category-card" style={{ '--petal': category.petal }}>
-                <FlowerArt petal={category.petal} className="category-card__art" />
+            {(categoriesApi.data ?? []).map((category) => (
+              <Link key={category.id} to={`/products?category=${category.slug}`} className="category-card" style={{ '--petal': category.petalColor }}>
+                <FlowerArt petal={category.petalColor} className="category-card__art" />
                 <h3>{category.name}</h3>
                 <p>{category.description}</p>
               </Link>
@@ -72,6 +80,7 @@ export default function Home() {
           <SectionHeading eyebrow="Bán chạy" title="Sản phẩm nổi bật">
             Những mẫu được khách chọn nhiều nhất trong tuần.
           </SectionHeading>
+          <ApiState loading={productsApi.loading} error={productsApi.error} onRetry={productsApi.reload} />
           <div className="grid grid--4">
             {featured.map((product) => (
               <ProductCard key={product.id} product={product} />

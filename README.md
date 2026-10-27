@@ -2,11 +2,11 @@
 
 Bài thực hành môn Lập trình web (INT1334). Đề tài cuối môn: **quản lý shop hoa**.
 
-Công nghệ: **React 19 + Vite + React Router 8** (JavaScript, không dùng back-end — dữ liệu là dữ liệu mẫu trong `src/data/shop.js`).
+Công nghệ: **React 19 + Vite + React Router 8 + Axios** (JavaScript). Dữ liệu sản phẩm, danh mục, đơn hàng lấy từ API ASP.NET Core ở project `flower-shop-api` (lab 2); thông tin tĩnh của shop nằm ở `src/data/shop.js`.
 
 ## Chạy project
 
-Cần Node.js ≥ 20.19 (yêu cầu của Vite 8).
+Cần Node.js ≥ 20.19 (yêu cầu của Vite 8) và **back-end `flower-shop-api` đang chạy** ở `http://localhost:5080` (xem README của project đó). Nếu API ở địa chỉ khác, sao chép `.env.example` thành `.env` và sửa `VITE_API_URL`.
 
 ```bash
 npm install
@@ -15,6 +15,19 @@ npm run build    # build production vào dist/
 npm run preview  # chạy thử bản build (cổng 3000)
 npm run lint
 ```
+
+## Gọi API bằng Axios (`src/api/`)
+
+`client.js` tạo một instance Axios dùng chung (baseURL, header JSON, timeout, hàm đổi lỗi thành câu tiếng Việt). Mỗi nhóm endpoint có một file:
+
+| Phương thức | Hàm | Dùng ở |
+|---|---|---|
+| GET | `getProducts`, `getProduct`, `getCategories`, `getOrders` | Trang chủ, Sản phẩm, Chi tiết, Quản lý |
+| POST | `createOrder`, `createProduct` | Form Đặt hoa; Quản lý → Thêm sản phẩm |
+| PUT | `updateOrder`, `updateProduct` | Quản lý → đổi trạng thái đơn; Sửa sản phẩm |
+| DELETE | `deleteOrder`, `deleteProduct` | Quản lý → Xóa đơn đã hủy; Xóa sản phẩm |
+
+Hook `src/hooks/useApi.js` gọi API khi trang mở và trả `{ data, loading, error, status, reload }`; component `ApiState` hiện trạng thái đang tải / lỗi kèm nút "Thử lại".
 
 ## Các trang (route)
 
@@ -42,15 +55,15 @@ src/
   main.jsx            điểm vào, bọc BrowserRouter
   App.jsx             bảng route
   index.css           biến màu, reset, nút, form dùng chung
-  data/shop.js        thông tin shop, danh mục, sản phẩm, đơn hàng mẫu
-  components/         Header, Footer, Layout, AdminLayout, ProductCard, FlowerArt...
+  api/                Axios: client.js + products.js, orders.js, categories.js
+  data/shop.js        thông tin tĩnh của shop, nhãn trạng thái đơn, khung giờ giao
+  components/         Header, Footer, Layout, AdminLayout, ProductCard, ProductForm, ApiState...
   pages/              các trang công khai (+ pages/admin/ cho khu quản lý)
-  hooks/usePageTitle.js   đổi tiêu đề tab theo trang
-  utils/format.js     định dạng tiền
+  hooks/              usePageTitle (đổi tiêu đề tab), useApi (gọi API + trạng thái tải)
+  utils/format.js     định dạng tiền, ngày
 ```
 
 ## Chưa có
 
-- Back-end / cơ sở dữ liệu: form đặt hoa và liên hệ chỉ hiện xác nhận, chưa gửi đi đâu.
-- Đăng nhập: `/admin` đang mở cho mọi người, chỉ là giao diện quản lý mẫu.
-- Thêm / sửa / xóa sản phẩm và đổi trạng thái đơn trong khu quản lý.
+- Đăng nhập: `/admin` và các endpoint ghi của API đang mở cho mọi người.
+- Form Liên hệ chỉ hiện xác nhận, chưa có endpoint để gửi đi.

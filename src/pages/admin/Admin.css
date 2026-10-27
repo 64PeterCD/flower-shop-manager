@@ -12,8 +12,47 @@
 }
 
 .admin-search {
-  max-width: 320px;
+  width: min(100%, 320px);
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 16px;
+}
+
+.product-form {
+  margin-bottom: 24px;
+}
+
+.product-form input[type='color'] {
+  height: 42px;
+  padding: 4px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.table__actions {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.status-select {
+  padding: 6px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
 }
 
 /* ---------- Thẻ số liệu ---------- */

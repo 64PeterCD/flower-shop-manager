@@ -75,6 +75,29 @@
   margin-top: auto;
 }
 
+/* ---------- Đang tải / lỗi khi gọi API ---------- */
+.api-state {
+  padding: 24px;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+  text-align: center;
+  color: var(--muted);
+}
+
+.api-state--error {
+  border-color: #e3a8a0;
+  color: #912a1c;
+  background: #fdf1ef;
+}
+
+.api-state p {
+  margin: 0 0 12px;
+}
+
+.api-state--error p:last-child {
+  margin-bottom: 0;
+}
+
 /* ---------- Nhãn trạng thái ---------- */
 .badge {
   display: inline-block;

@@ -1,6 +1,10 @@
 import { Link } from 'react-router'
+import { getOrders } from '../../api/orders.js'
+import { getProducts } from '../../api/products.js'
+import ApiState from '../../components/ApiState.jsx'
 import StatusBadge from '../../components/StatusBadge.jsx'
-import { LOW_STOCK, orderTotal, orders, products } from '../../data/shop.js'
+import { LOW_STOCK, orderStatusLabels } from '../../data/shop.js'
+import useApi from '../../hooks/useApi.js'
 import usePageTitle from '../../hooks/usePageTitle.js'
 import { formatPrice } from '../../utils/format.js'
 import './Admin.css'
@@ -8,9 +12,34 @@ import './Admin.css'
 export default function Dashboard() {
   usePageTitle('Quản lý · Tổng quan')
 
-  const newOrders = orders.filter((order) => order.status === 'Mới').length
-  const inProgress = orders.filter((order) => order.status === 'Đang chuẩn bị' || order.status === 'Đang giao').length
-  const revenue = orders.filter((order) => order.status === 'Hoàn thành').reduce((sum, order) => sum + orderTotal(order), 0)
+  const ordersApi = useApi(() => getOrders(), [])
+  const productsApi = useApi(() => getProducts(), [])
+  const orders = ordersApi.data
+  const products = productsApi.data
+
+  if (!orders || !products) {
+    const failed = ordersApi.error ? ordersApi : productsApi
+    return (
+      <>
+        <header className="admin-head">
+          <h1>Tổng quan</h1>
+        </header>
+        <ApiState
+          loading={ordersApi.loading || productsApi.loading}
+          error={ordersApi.error ?? productsApi.error}
+          onRetry={() => {
+            ordersApi.reload()
+            productsApi.reload()
+            failed.reload()
+          }}
+        />
+      </>
+    )
+  }
+
+  const newOrders = orders.filter((order) => order.status === 'New').length
+  const inProgress = orders.filter((order) => order.status === 'Preparing' || order.status === 'Delivering').length
+  const revenue = orders.filter((order) => order.status === 'Completed').reduce((sum, order) => sum + order.total, 0)
   const lowStock = products.filter((product) => product.stock <= LOW_STOCK)
 
   const stats = [
@@ -24,7 +53,7 @@ export default function Dashboard() {
     <>
       <header className="admin-head">
         <h1>Tổng quan</h1>
-        <p className="muted">Số liệu tính từ dữ liệu mẫu trong <code>src/data/shop.js</code>.</p>
+        <p className="muted">Số liệu lấy trực tiếp từ API back-end.</p>
       </header>
 
       <div className="stats">
@@ -50,12 +79,15 @@ export default function Dashboard() {
               <tbody>
                 {orders.slice(0, 5).map((order) => (
                   <tr key={order.id}>
-                    <td>{order.id}</td>
-                    <td>{order.customer}</td>
-                    <td>{formatPrice(orderTotal(order))}</td>
-                    <td><StatusBadge label={order.status} /></td>
+                    <td>{order.code}</td>
+                    <td>{order.customerName}</td>
+                    <td>{formatPrice(order.total)}</td>
+                    <td><StatusBadge label={orderStatusLabels[order.status]} /></td>
                   </tr>
                 ))}
+                {orders.length === 0 && (
+                  <tr><td colSpan="4" className="muted">Chưa có đơn nào.</td></tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -73,6 +105,7 @@ export default function Dashboard() {
                 <span className="stock-list__qty">còn {product.stock}</span>
               </li>
             ))}
+            {lowStock.length === 0 && <li className="muted">Tồn kho đều ổn.</li>}
           </ul>
         </section>
       </div>

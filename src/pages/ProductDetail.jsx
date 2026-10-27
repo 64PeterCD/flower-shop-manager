@@ -1,49 +1,65 @@
 import { Link, useParams } from 'react-router'
+import { getProduct, getProducts } from '../api/products.js'
+import ApiState from '../components/ApiState.jsx'
 import FlowerArt from '../components/FlowerArt.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import StatusBadge from '../components/StatusBadge.jsx'
-import { LOW_STOCK, getCategory, getProduct, products } from '../data/shop.js'
+import { LOW_STOCK } from '../data/shop.js'
+import useApi from '../hooks/useApi.js'
 import usePageTitle from '../hooks/usePageTitle.js'
 import { formatPrice } from '../utils/format.js'
 import './Pages.css'
 
+function NotFoundBlock({ productId }) {
+  return (
+    <section className="section">
+      <div className="container notfound">
+        <h1>Không tìm thấy sản phẩm</h1>
+        <p className="muted">Mã sản phẩm "{productId}" không tồn tại hoặc đã ngừng bán.</p>
+        <Link to="/products" className="btn btn--primary">Về danh sách sản phẩm</Link>
+      </div>
+    </section>
+  )
+}
+
 export default function ProductDetail() {
   // :productId trong route "products/:productId" -> useParams()
   const { productId } = useParams()
-  const product = getProduct(productId)
-  usePageTitle(product ? product.name : 'Không tìm thấy sản phẩm')
+  const { data: product, loading, error, status, reload } = useApi(() => getProduct(productId), [productId])
+  const categorySlug = product?.categorySlug
+  const { data: sameCategory } = useApi(() => (categorySlug ? getProducts({ category: categorySlug }) : Promise.resolve([])), [categorySlug])
+  usePageTitle(product ? product.name : 'Chi tiết sản phẩm')
+
+  if (status === 404) return <NotFoundBlock productId={productId} />
 
   if (!product) {
     return (
       <section className="section">
-        <div className="container notfound">
-          <h1>Không tìm thấy sản phẩm</h1>
-          <p className="muted">Mã sản phẩm "{productId}" không tồn tại hoặc đã ngừng bán.</p>
-          <Link to="/products" className="btn btn--primary">Về danh sách sản phẩm</Link>
+        <div className="container">
+          <ApiState loading={loading} error={error} onRetry={reload} />
         </div>
       </section>
     )
   }
 
-  const category = getCategory(product.categoryId)
   const stockLabel = product.stock === 0 ? 'Hết hàng' : product.stock <= LOW_STOCK ? 'Sắp hết' : 'Còn hàng'
-  const related = products.filter((item) => item.categoryId === product.categoryId && item.id !== product.id)
+  const related = (sameCategory ?? []).filter((item) => item.id !== product.id)
 
   return (
     <>
       <section className="section">
         <div className="container">
           <nav className="breadcrumb" aria-label="Đường dẫn">
-            <Link to="/products">Sản phẩm</Link> / <Link to={`/products?category=${category.id}`}>{category.name}</Link> /{' '}
+            <Link to="/products">Sản phẩm</Link> / <Link to={`/products?category=${product.categorySlug}`}>{product.categoryName}</Link> /{' '}
             <span>{product.name}</span>
           </nav>
 
           <div className="detail">
-            <div className="detail__visual" style={{ '--petal': product.petal }}>
-              <FlowerArt petal={product.petal} />
+            <div className="detail__visual" style={{ '--petal': product.petalColor }}>
+              <FlowerArt petal={product.petalColor} />
             </div>
             <div>
-              <p className="eyebrow">{category.name}</p>
+              <p className="eyebrow">{product.categoryName}</p>
               <h1>{product.name}</h1>
               <p className="detail__price">{formatPrice(product.price)}</p>
               <p>{product.description}</p>
