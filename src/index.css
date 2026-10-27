@@ -1,0 +1,274 @@
+/* ---------- Biến màu / font dùng chung ---------- */
+:root {
+  --bg: #fff8f5;
+  --surface: #ffffff;
+  --surface-alt: #fdeef0;
+  --line: #f0dcdf;
+  --text: #2b2226;
+  --muted: #6f6168;
+  --rose: #b3365a;
+  --rose-dark: #8f2647;
+  --sage: #4f7a5a;
+  --sage-soft: #e6f0e7;
+  --gold: #f5c542;
+  --radius: 16px;
+  --shadow: 0 8px 24px rgba(120, 50, 70, 0.1);
+  --container: 1120px;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Không dùng Georgia: bản đậm thiếu glyph "ắ", "ầ"... nên dấu bị tách rời. Lora được nạp trong index.html. */
+  --font-display: 'Lora', Cambria, 'Times New Roman', serif;
+  color-scheme: light;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 0.5em;
+  font-family: var(--font-display);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+}
+
+h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--rose);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--sage);
+  outline-offset: 2px;
+}
+
+/* ---------- Bố cục ---------- */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+.section {
+  padding-block: 64px;
+}
+
+.section--alt {
+  background: var(--surface-alt);
+}
+
+.grid {
+  display: grid;
+  gap: 24px;
+}
+
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.eyebrow {
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.flower-art {
+  display: block;
+  width: auto;
+}
+
+/* ---------- Nút ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn--primary {
+  background: var(--rose);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--rose-dark);
+}
+
+.btn--outline {
+  background: transparent;
+  border-color: var(--rose);
+  color: var(--rose);
+}
+
+.btn--outline:hover {
+  background: var(--rose);
+  color: #fff;
+}
+
+.btn--sm {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+/* ---------- Form ---------- */
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.form__row {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+}
+
+.field textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(179, 54, 90, 0.18);
+}
+
+.field--invalid input,
+.field--invalid select,
+.field--invalid textarea {
+  border-color: #c0392b;
+}
+
+.field__error {
+  font-size: 0.85rem;
+  color: #b0281a;
+}
+
+/* ---------- Giảm chuyển động nếu người dùng yêu cầu ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

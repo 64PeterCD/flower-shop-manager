@@ -1,0 +1,241 @@
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 248, 245, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 68px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rose);
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.brand__mark {
+  font-size: 1.6rem;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.main-nav a:not(.btn) {
+  padding-block: 6px;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.main-nav a:not(.btn):hover {
+  color: var(--rose);
+  text-decoration: none;
+}
+
+/* NavLink tự thêm class "active" cho link trùng URL hiện tại */
+.main-nav a.active {
+  color: var(--rose);
+  border-bottom-color: var(--rose);
+}
+
+.menu-toggle {
+  display: none;
+  padding: 8px 16px;
+  border: 1.5px solid var(--rose);
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--rose);
+  background: transparent;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .menu-toggle {
+    display: inline-block;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .main-nav--open {
+    display: flex;
+  }
+
+  .main-nav a:not(.btn) {
+    padding: 10px 4px;
+  }
+}
+
+/* ---------- Footer ---------- */
+.site-main {
+  flex: 1;
+}
+
+.site-footer {
+  margin-top: 64px;
+  padding-top: 48px;
+  color: #f6e7ea;
+  background: #3a1f29;
+}
+
+.site-footer__grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.site-footer h3 {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.site-footer li {
+  margin-bottom: 6px;
+}
+
+.site-footer a {
+  color: #f6c9d4;
+}
+
+.site-footer__brand {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.site-footer__copy {
+  margin: 32px 0 0;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+  font-size: 0.85rem;
+  color: #d9bcc5;
+}
+
+/* ---------- Khu quản lý ---------- */
+.admin {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.admin__sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100vh;
+  padding: 24px 16px;
+  color: #f6e7ea;
+  background: #3a1f29;
+}
+
+.brand--light {
+  color: #fff;
+}
+
+.admin__label {
+  margin: 24px 0 4px;
+  padding-inline: 12px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #d9bcc5;
+}
+
+.admin__sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin__sidebar nav a {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #f6e7ea;
+}
+
+.admin__sidebar nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+}
+
+.admin__sidebar nav a.active {
+  background: var(--rose);
+  color: #fff;
+}
+
+.admin__back {
+  margin-top: auto;
+  padding: 10px 12px;
+  color: #f6c9d4;
+}
+
+.admin__content {
+  min-width: 0;
+  padding: 32px;
+}
+
+@media (max-width: 860px) {
+  .admin {
+    grid-template-columns: 1fr;
+  }
+
+  .admin__sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .admin__sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .admin__label {
+    margin-top: 8px;
+  }
+
+  .admin__back {
+    margin-top: 0;
+  }
+
+  .admin__content {
+    padding: 24px 16px;
+  }
+}
