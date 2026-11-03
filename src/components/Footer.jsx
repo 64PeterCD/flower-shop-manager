@@ -1,8 +1,11 @@
 import { Link } from 'react-router'
 import { shop } from '../data/shop.js'
+import useAuth from '../hooks/useAuth.js'
 import './Layout.css'
 
 export default function Footer() {
+  const { isAdmin } = useAuth()
+
   return (
     <footer className="site-footer">
       <div className="container site-footer__grid">
@@ -16,7 +19,7 @@ export default function Footer() {
             <li><Link to="/products">Sản phẩm</Link></li>
             <li><Link to="/order">Đặt hoa online</Link></li>
             <li><Link to="/about-us">Về Sắc Hoa</Link></li>
-            <li><Link to="/admin">Trang quản lý</Link></li>
+            {isAdmin && <li><Link to="/admin">Trang quản lý</Link></li>}
           </ul>
         </div>
         <div>

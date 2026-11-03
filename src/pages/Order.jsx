@@ -4,6 +4,7 @@ import { getErrorMessage } from '../api/client.js'
 import { createOrder } from '../api/orders.js'
 import { getProducts } from '../api/products.js'
 import ApiState from '../components/ApiState.jsx'
+import Field from '../components/Field.jsx'
 import { deliverySlots } from '../data/shop.js'
 import useApi from '../hooks/useApi.js'
 import usePageTitle from '../hooks/usePageTitle.js'
@@ -28,16 +29,6 @@ function validate(form, product) {
   else if (form.date < today()) errors.date = 'Ngày giao không được ở quá khứ.'
   if (!form.slot) errors.slot = 'Vui lòng chọn khung giờ.'
   return errors
-}
-
-function Field({ id, label, error, children }) {
-  return (
-    <div className={`field ${error ? 'field--invalid' : ''}`}>
-      <label htmlFor={id}>{label}</label>
-      {children}
-      {error && <span className="field__error" role="alert">{error}</span>}
-    </div>
-  )
 }
 
 export default function Order() {

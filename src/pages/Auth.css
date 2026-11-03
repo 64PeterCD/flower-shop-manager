@@ -1,0 +1,26 @@
+/* ---------- Đăng nhập / Đăng ký ---------- */
+.auth {
+  display: grid;
+  place-items: start center;
+}
+
+.auth__card {
+  width: min(100%, 440px);
+  padding: 32px 28px;
+}
+
+.auth__card h1 {
+  margin-bottom: 0;
+  font-size: clamp(1.6rem, 4vw, 2rem);
+}
+
+.auth__switch {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.field__hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+}

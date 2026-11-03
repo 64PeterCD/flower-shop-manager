@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router'
+import { Link, NavLink, useNavigate } from 'react-router'
 import { shop } from '../data/shop.js'
+import useAuth from '../hooks/useAuth.js'
 import './Layout.css'
 
 const MENU = [
@@ -13,7 +14,16 @@ const MENU = [
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const { user, isAuthenticated, isAdmin, logout } = useAuth()
+  const navigate = useNavigate()
   const closeMenu = () => setOpen(false)
+
+  function handleLogout() {
+    closeMenu()
+    logout()
+    // Ở trang công khai thì về trang chủ; riêng /admin sẽ do RequireAdmin tự chuyển sang /login (kèm trang cần quay lại).
+    navigate('/')
+  }
 
   return (
     <header className="site-header">
@@ -39,9 +49,32 @@ export default function Header() {
               {item.label}
             </NavLink>
           ))}
-          <Link to="/admin" className="btn btn--primary btn--sm" onClick={closeMenu}>
-            Quản lý shop
-          </Link>
+
+          {isAdmin && (
+            <Link to="/admin" className="btn btn--primary btn--sm" onClick={closeMenu}>
+              Quản lý shop
+            </Link>
+          )}
+
+          {isAuthenticated ? (
+            <>
+              <span className="main-nav__user" title={user.email}>
+                {user.email}
+              </span>
+              <button type="button" className="btn btn--outline btn--sm" onClick={handleLogout}>
+                Đăng xuất
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink to="/login" onClick={closeMenu}>
+                Đăng nhập
+              </NavLink>
+              <Link to="/register" className="btn btn--primary btn--sm" onClick={closeMenu}>
+                Đăng ký
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>

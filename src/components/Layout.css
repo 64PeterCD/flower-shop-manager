@@ -40,6 +40,12 @@
   gap: 24px;
 }
 
+.brand,
+.main-nav a,
+.main-nav .btn {
+  white-space: nowrap;
+}
+
 .main-nav a:not(.btn) {
   padding-block: 6px;
   border-bottom: 2px solid transparent;
@@ -58,6 +64,15 @@
   border-bottom-color: var(--rose);
 }
 
+.main-nav__user {
+  max-width: 160px;
+  overflow: hidden;
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
 .menu-toggle {
   display: none;
   padding: 8px 16px;
@@ -70,7 +85,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1060px) {
   .menu-toggle {
     display: inline-block;
   }
@@ -201,8 +216,33 @@
   color: #fff;
 }
 
-.admin__back {
+.admin__user {
   margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.85rem;
+  color: #d9bcc5;
+  overflow-wrap: anywhere;
+}
+
+.admin__user button {
+  margin-top: 8px;
+  padding: 6px 14px;
+  border: 1.5px solid #f6c9d4;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  color: #f6c9d4;
+  background: transparent;
+  cursor: pointer;
+}
+
+.admin__user button:hover {
+  color: #3a1f29;
+  background: #f6c9d4;
+}
+
+.admin__back {
   padding: 10px 12px;
   color: #f6c9d4;
 }
@@ -231,7 +271,7 @@
     margin-top: 8px;
   }
 
-  .admin__back {
+  .admin__user {
     margin-top: 0;
   }
 

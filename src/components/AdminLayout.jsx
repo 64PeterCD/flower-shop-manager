@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet } from 'react-router'
 import { shop } from '../data/shop.js'
+import useAuth from '../hooks/useAuth.js'
 import ScrollToTop from './ScrollToTop.jsx'
 import './Layout.css'
 
@@ -10,7 +11,11 @@ const ADMIN_MENU = [
 ]
 
 // Khung của khu quản lý (/admin/...): thanh bên + nội dung từng trang con.
+// Được bọc bởi <RequireAdmin> ở App.jsx nên chỉ tài khoản Admin mới vào tới đây;
+// đăng xuất ở đây thì RequireAdmin tự chuyển sang /login.
 export default function AdminLayout() {
+  const { user, logout } = useAuth()
+
   return (
     <div className="admin">
       <ScrollToTop />
@@ -27,6 +32,11 @@ export default function AdminLayout() {
             </NavLink>
           ))}
         </nav>
+        <div className="admin__user">
+          Đăng nhập: {user.email}
+          <br />
+          <button type="button" onClick={logout}>Đăng xuất</button>
+        </div>
         <Link to="/" className="admin__back">← Về trang web</Link>
       </aside>
       <div className="admin__content">
