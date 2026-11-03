@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet } from 'react-router'
 import { shop } from '../data/shop.js'
 import useAuth from '../hooks/useAuth.js'
+import BrandMark from './BrandMark.jsx'
 import ScrollToTop from './ScrollToTop.jsx'
 import './Layout.css'
 
@@ -21,7 +22,7 @@ export default function AdminLayout() {
       <ScrollToTop />
       <aside className="admin__sidebar">
         <Link to="/" className="brand brand--light">
-          <span className="brand__mark" aria-hidden="true">✿</span>
+          <BrandMark />
           {shop.name}
         </Link>
         <p className="admin__label">Quản lý shop</p>

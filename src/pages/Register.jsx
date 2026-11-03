@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import { Link, Navigate, useLocation } from 'react-router'
 import { getErrorMessage, getFieldErrors } from '../api/client.js'
+import AuthArt from '../components/AuthArt.jsx'
 import Field from '../components/Field.jsx'
+import PasswordInput from '../components/PasswordInput.jsx'
 import useAuth from '../hooks/useAuth.js'
 import usePageTitle from '../hooks/usePageTitle.js'
+import { focusFirstInvalid } from '../utils/focus.js'
 import { compactErrors, validateConfirmPassword, validateEmail, validateNewPassword } from '../utils/validators.js'
 import './Auth.css'
+
+const FIELD_ORDER = ['email', 'password', 'confirm']
 
 export default function Register() {
   usePageTitle('Đăng ký')
@@ -45,16 +50,25 @@ export default function Register() {
     event.preventDefault()
     setSubmitted(true)
     setSubmitError('')
-    if (Object.keys(clientErrors).length > 0) return
+    if (Object.keys(clientErrors).length > 0) {
+      focusFirstInvalid(clientErrors, FIELD_ORDER)
+      return
+    }
 
     setSubmitting(true)
     try {
       await register(form.email.trim(), form.password)
     } catch (error) {
       const fieldErrors = getFieldErrors(error)
-      if (Object.keys(fieldErrors).length > 0) setServerErrors(fieldErrors)
-      else if (error.response?.status === 409) setServerErrors({ email: getErrorMessage(error) })
-      else setSubmitError(getErrorMessage(error))
+      if (Object.keys(fieldErrors).length > 0) {
+        setServerErrors(fieldErrors)
+        focusFirstInvalid(fieldErrors, FIELD_ORDER)
+      } else if (error.response?.status === 409) {
+        setServerErrors({ email: getErrorMessage(error) })
+        focusFirstInvalid({ email: true }, FIELD_ORDER)
+      } else {
+        setSubmitError(getErrorMessage(error))
+      }
       setSubmitting(false)
     }
   }
@@ -62,10 +76,12 @@ export default function Register() {
   return (
     <section className="section">
       <div className="container auth">
-        <form className="form panel auth__card" onSubmit={handleSubmit} noValidate>
+        <AuthArt />
+
+        <form className="form auth__card" onSubmit={handleSubmit} noValidate>
           <div>
-            <p className="eyebrow">Tài khoản</p>
             <h1>Đăng ký</h1>
+            <p className="muted">Tạo tài khoản chỉ mất một phút.</p>
           </div>
 
           <Field id="email" label="Email" error={errorOf('email')}>
@@ -80,10 +96,9 @@ export default function Register() {
             />
           </Field>
           <Field id="password" label="Mật khẩu" error={errorOf('password')} hint="Từ 8 ký tự, gồm cả chữ và số.">
-            <input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               autoComplete="new-password"
               value={form.password}
               onChange={handleChange}
@@ -91,10 +106,9 @@ export default function Register() {
             />
           </Field>
           <Field id="confirm" label="Nhập lại mật khẩu" error={errorOf('confirm')}>
-            <input
+            <PasswordInput
               id="confirm"
               name="confirm"
-              type="password"
               autoComplete="new-password"
               value={form.confirm}
               onChange={handleChange}

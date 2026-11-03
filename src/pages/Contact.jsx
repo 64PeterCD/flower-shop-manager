@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import Icon from '../components/Icon.jsx'
+import PageHeader from '../components/PageHeader.jsx'
 import { shop } from '../data/shop.js'
 import usePageTitle from '../hooks/usePageTitle.js'
 import './Pages.css'
@@ -14,30 +16,24 @@ export default function Contact() {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <p className="eyebrow">Liên hệ</p>
-          <h1>Trò chuyện cùng Sắc Hoa</h1>
-          <p className="muted page-hero__lead">Cần tư vấn mẫu hoa, đặt số lượng lớn hay hoa sự kiện? Cứ nhắn cho shop.</p>
-        </div>
-      </section>
+      <PageHeader title="Liên hệ">Cần tư vấn mẫu hoa, đặt số lượng lớn hoặc hoa sự kiện? Cứ nhắn cho shop.</PageHeader>
 
-      <section className="section">
+      <section className="section section--compact">
         <div className="container grid grid--2">
           <div className="panel">
-            <h3>Thông tin cửa hàng</h3>
-            <dl className="info-list">
-              <div><dt>Địa chỉ</dt><dd>{shop.address}</dd></div>
-              <div><dt>Điện thoại</dt><dd>{shop.phone}</dd></div>
-              <div><dt>Email</dt><dd>{shop.email}</dd></div>
-              <div><dt>Giờ mở cửa</dt><dd>{shop.hours}</dd></div>
-            </dl>
+            <h2 className="panel__title">Thông tin cửa hàng</h2>
+            <ul className="contact-list">
+              <li><Icon name="pin" size={22} /><span>{shop.address}</span></li>
+              <li><Icon name="phone" size={22} /><a href={`tel:${shop.phone.replace(/\s/g, '')}`}>{shop.phone}</a></li>
+              <li><Icon name="mail" size={22} /><a href={`mailto:${shop.email}`}>{shop.email}</a></li>
+              <li><Icon name="clock" size={22} /><span>{shop.hours}</span></li>
+            </ul>
           </div>
 
           <div className="panel">
-            <h3>Gửi lời nhắn</h3>
+            <h2 className="panel__title">Gửi lời nhắn</h2>
             {sent ? (
-              <p role="status">Cảm ơn bạn! Shop sẽ phản hồi trong vòng 24 giờ. (Bản demo: lời nhắn chưa được gửi đi.)</p>
+              <p role="status">Shop đã nhận lời nhắn và sẽ phản hồi trong vòng 24 giờ. (Bản demo: lời nhắn chưa được gửi đi.)</p>
             ) : (
               <form className="form" onSubmit={handleSubmit}>
                 <div className="field">

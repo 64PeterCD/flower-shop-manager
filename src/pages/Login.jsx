@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link, Navigate, useLocation } from 'react-router'
 import { getErrorMessage } from '../api/client.js'
+import AuthArt from '../components/AuthArt.jsx'
 import Field from '../components/Field.jsx'
+import PasswordInput from '../components/PasswordInput.jsx'
 import useAuth from '../hooks/useAuth.js'
 import usePageTitle from '../hooks/usePageTitle.js'
+import { focusFirstInvalid } from '../utils/focus.js'
 import { compactErrors, validateEmail } from '../utils/validators.js'
 import './Auth.css'
 
@@ -36,7 +39,10 @@ export default function Login() {
     })
     setErrors(found)
     setSubmitError('')
-    if (Object.keys(found).length > 0) return
+    if (Object.keys(found).length > 0) {
+      focusFirstInvalid(found, ['email', 'password'])
+      return
+    }
 
     setSubmitting(true)
     try {
@@ -50,24 +56,19 @@ export default function Login() {
   return (
     <section className="section">
       <div className="container auth">
-        <form className="form panel auth__card" onSubmit={handleSubmit} noValidate>
+        <AuthArt />
+
+        <form className="form auth__card" onSubmit={handleSubmit} noValidate>
           <div>
-            <p className="eyebrow">Tài khoản</p>
             <h1>Đăng nhập</h1>
+            <p className="muted">Dùng email và mật khẩu bạn đã đăng ký.</p>
           </div>
 
           <Field id="email" label="Email" error={errors.email}>
             <input id="email" name="email" type="email" autoComplete="email" value={form.email} onChange={handleChange} />
           </Field>
           <Field id="password" label="Mật khẩu" error={errors.password}>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              value={form.password}
-              onChange={handleChange}
-            />
+            <PasswordInput id="password" name="password" autoComplete="current-password" value={form.password} onChange={handleChange} />
           </Field>
 
           {submitError && (

@@ -84,6 +84,11 @@
   color: var(--muted);
 }
 
+/* min-width: 0 để bảng rộng cuộn ngang trong khung thay vì làm cả trang tràn */
+.admin-grid > * {
+  min-width: 0;
+}
+
 .admin-grid {
   display: grid;
   align-items: start;

@@ -20,7 +20,6 @@ export default function RequireAdmin({ children }) {
         <main className="site-main">
           <section className="section">
             <div className="container notfound">
-              <p className="eyebrow">Lỗi 403</p>
               <h1>Bạn không có quyền vào trang quản lý</h1>
               <p className="muted">
                 Tài khoản {user.email} là tài khoản khách hàng. Hãy đăng xuất rồi đăng nhập bằng tài khoản quản trị.

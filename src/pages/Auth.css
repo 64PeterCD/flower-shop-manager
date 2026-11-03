@@ -1,26 +1,100 @@
 /* ---------- Đăng nhập / Đăng ký ---------- */
 .auth {
   display: grid;
-  place-items: start center;
+  align-items: center;
+  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  max-width: 980px;
+}
+
+.auth__art {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+}
+
+.auth__window {
+  position: relative;
+  width: min(100%, 320px);
+  aspect-ratio: 4 / 5;
+  border-radius: var(--arch);
+  background: var(--rose-100);
+}
+
+.auth__window .bouquet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.auth__tagline {
+  max-width: 16rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  text-align: center;
+  color: var(--leaf-800);
 }
 
 .auth__card {
   width: min(100%, 440px);
-  padding: 32px 28px;
+  justify-self: center;
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
 }
 
 .auth__card h1 {
-  margin-bottom: 0;
-  font-size: clamp(1.6rem, 4vw, 2rem);
+  margin-bottom: var(--space-1);
+  font-size: var(--step-3);
+}
+
+.auth__card p {
+  margin: 0;
 }
 
 .auth__switch {
-  margin: 0;
   text-align: center;
-  color: var(--muted);
+  color: var(--ink-muted);
 }
 
-.field__hint {
-  font-size: 0.85rem;
-  color: var(--muted);
+/* Ô mật khẩu có nút hiện / ẩn */
+.password {
+  position: relative;
+}
+
+.password input {
+  padding-right: 52px;
+}
+
+.password__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--ink-muted);
+  background: none;
+  cursor: pointer;
+}
+
+.password__toggle:hover {
+  color: var(--leaf-900);
+}
+
+@media (max-width: 860px) {
+  .auth {
+    grid-template-columns: 1fr;
+  }
+
+  .auth__art {
+    display: none;
+  }
 }

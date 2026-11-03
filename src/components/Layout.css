@@ -1,9 +1,9 @@
-/* ---------- Header ---------- */
+/* ---------- Đầu trang ---------- */
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: rgba(255, 248, 245, 0.94);
+  z-index: 20;
+  background: rgba(251, 252, 249, 0.94);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
 }
@@ -12,80 +12,97 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  min-height: 68px;
+  gap: var(--space-4);
+  min-height: var(--header-h);
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 700;
-  color: var(--rose);
-}
-
-.brand:hover {
+  font-variation-settings: 'SOFT' 100;
+  white-space: nowrap;
+  color: var(--leaf-900);
   text-decoration: none;
 }
 
-.brand__mark {
-  font-size: 1.6rem;
+.brand:hover {
+  color: var(--leaf-900);
 }
 
 .main-nav {
   display: flex;
+  flex: 1;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-left: var(--space-6);
 }
 
-.brand,
-.main-nav a,
-.main-nav .btn {
+.main-nav__links,
+.main-nav__account {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.main-nav a:not(.btn),
+.main-nav__text-btn {
+  position: relative;
+  padding: 10px 2px;
+  font-weight: 500;
   white-space: nowrap;
-}
-
-.main-nav a:not(.btn) {
-  padding-block: 6px;
-  border-bottom: 2px solid transparent;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.main-nav a:not(.btn):hover {
-  color: var(--rose);
+  color: var(--leaf-900);
   text-decoration: none;
 }
 
+.main-nav a:not(.btn):hover,
+.main-nav__text-btn:hover {
+  color: var(--rose-700);
+}
+
 /* NavLink tự thêm class "active" cho link trùng URL hiện tại */
-.main-nav a.active {
-  color: var(--rose);
-  border-bottom-color: var(--rose);
+.main-nav a.active:not(.btn)::after {
+  content: '';
+  position: absolute;
+  right: 2px;
+  bottom: 4px;
+  left: 2px;
+  height: 2px;
+  background: var(--rose-600);
+}
+
+.main-nav__text-btn {
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
 
 .main-nav__user {
-  max-width: 160px;
+  max-width: 170px;
   overflow: hidden;
   font-size: 0.9rem;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--muted);
+  color: var(--ink-muted);
 }
 
 .menu-toggle {
   display: none;
-  padding: 8px 16px;
-  border: 1.5px solid var(--rose);
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border: 1.5px solid var(--leaf-700);
   border-radius: 999px;
-  font: inherit;
   font-weight: 600;
-  color: var(--rose);
+  color: var(--leaf-800);
   background: transparent;
   cursor: pointer;
 }
 
-@media (max-width: 1060px) {
+@media (max-width: 980px) {
   .menu-toggle {
     display: inline-block;
   }
@@ -93,14 +110,15 @@
   .main-nav {
     position: absolute;
     top: 100%;
-    left: 0;
     right: 0;
+    left: 0;
     display: none;
     flex-direction: column;
     align-items: stretch;
-    gap: 4px;
-    padding: 16px;
-    background: var(--bg);
+    gap: var(--space-4);
+    margin: 0;
+    padding: var(--space-4) clamp(16px, 4vw, 32px) var(--space-5);
+    background: var(--paper);
     border-bottom: 1px solid var(--line);
   }
 
@@ -108,62 +126,118 @@
     display: flex;
   }
 
-  .main-nav a:not(.btn) {
-    padding: 10px 4px;
+  .main-nav__links,
+  .main-nav__account {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .main-nav__account {
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .main-nav a:not(.btn),
+  .main-nav__text-btn {
+    min-height: 44px;
+    padding: 10px 0;
+    text-align: left;
+  }
+
+  .main-nav a.active:not(.btn)::after {
+    right: auto;
+    width: 28px;
+    bottom: 6px;
+    left: 0;
   }
 }
 
-/* ---------- Footer ---------- */
+/* ---------- Cuối trang ---------- */
 .site-main {
   flex: 1;
 }
 
 .site-footer {
-  margin-top: 64px;
-  padding-top: 48px;
-  color: #f6e7ea;
-  background: #3a1f29;
+  margin-top: var(--space-8);
+  padding-top: var(--space-7);
+  color: #dfeadf;
+  background: var(--leaf-900);
+}
+
+.site-footer a {
+  color: #dfeadf;
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+.site-footer :focus-visible {
+  outline-color: #fff;
 }
 
 .site-footer__grid {
   display: grid;
-  gap: 32px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-6);
+  grid-template-columns: 1.3fr 1fr 1.4fr;
 }
 
-.site-footer h3 {
+.site-footer__brand {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  font-variation-settings: 'SOFT' 100;
+  color: #fff;
+}
+
+.site-footer__tagline {
+  max-width: 28ch;
+  color: #bcd0c0;
+}
+
+.site-footer__title {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-body);
   font-size: 1rem;
+  font-weight: 700;
+  font-variation-settings: normal;
+  letter-spacing: 0;
   color: #fff;
 }
 
 .site-footer li {
-  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
 }
 
-.site-footer a {
-  color: #f6c9d4;
-}
-
-.site-footer__brand {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
+.site-footer li .icon {
+  color: var(--sun-400);
 }
 
 .site-footer__copy {
-  margin: 32px 0 0;
-  padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin: var(--space-7) 0 0;
+  padding: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   text-align: center;
-  font-size: 0.85rem;
-  color: #d9bcc5;
+  font-size: 0.875rem;
+  color: #a9c0ae;
+}
+
+@media (max-width: 760px) {
+  .site-footer__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- Khu quản lý ---------- */
 .admin {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 250px 1fr;
   min-height: 100vh;
 }
 
@@ -173,24 +247,27 @@
   align-self: start;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   height: 100vh;
-  padding: 24px 16px;
-  color: #f6e7ea;
-  background: #3a1f29;
+  padding: var(--space-5) var(--space-4);
+  color: #dfeadf;
+  background: var(--leaf-900);
 }
 
-.brand--light {
+.admin__sidebar :focus-visible {
+  outline-color: #fff;
+}
+
+.brand--light,
+.brand--light:hover {
   color: #fff;
 }
 
 .admin__label {
-  margin: 24px 0 4px;
+  margin: var(--space-5) 0 var(--space-1);
   padding-inline: 12px;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #d9bcc5;
+  font-size: 0.875rem;
+  color: #a9c0ae;
 }
 
 .admin__sidebar nav {
@@ -200,56 +277,63 @@
 }
 
 .admin__sidebar nav a {
-  padding: 10px 12px;
-  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
-  color: #f6e7ea;
+  color: #dfeadf;
+  text-decoration: none;
 }
 
 .admin__sidebar nav a:hover {
   background: rgba(255, 255, 255, 0.08);
-  text-decoration: none;
+  color: #fff;
 }
 
 .admin__sidebar nav a.active {
-  background: var(--rose);
   color: #fff;
+  background: var(--rose-600);
 }
 
 .admin__user {
   margin-top: auto;
   padding: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
-  font-size: 0.85rem;
-  color: #d9bcc5;
+  font-size: 0.875rem;
+  color: #bcd0c0;
   overflow-wrap: anywhere;
 }
 
 .admin__user button {
-  margin-top: 8px;
-  padding: 6px 14px;
-  border: 1.5px solid #f6c9d4;
+  min-height: 40px;
+  margin-top: var(--space-2);
+  padding: 0 16px;
+  border: 1.5px solid #dfeadf;
   border-radius: 999px;
-  font: inherit;
   font-weight: 600;
-  color: #f6c9d4;
+  color: #dfeadf;
   background: transparent;
   cursor: pointer;
 }
 
 .admin__user button:hover {
-  color: #3a1f29;
-  background: #f6c9d4;
+  color: var(--leaf-900);
+  background: #dfeadf;
 }
 
 .admin__back {
-  padding: 10px 12px;
-  color: #f6c9d4;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  color: #dfeadf;
 }
 
 .admin__content {
   min-width: 0;
-  padding: 32px;
+  padding: var(--space-6);
 }
 
 @media (max-width: 860px) {
@@ -268,7 +352,7 @@
   }
 
   .admin__label {
-    margin-top: 8px;
+    margin-top: var(--space-2);
   }
 
   .admin__user {
@@ -276,6 +360,6 @@
   }
 
   .admin__content {
-    padding: 24px 16px;
+    padding: var(--space-5) var(--space-4);
   }
 }
